@@ -43,6 +43,9 @@
   "exclude": [
     "node_modules",
     ".next",
-    "src/generated"
+    "src/generated",
+    "tests",
+    "scripts",
+    "server.mjs"
   ]
 }

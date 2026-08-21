@@ -19,9 +19,24 @@ import { formatDate, isoDate, truncate } from "@/lib/utils";
 
 type Params = Promise<{ slug: string }>;
 
+/**
+ * Prebuilds a page per published article.
+ *
+ * The build runs this against the database, and on a hosting platform the
+ * database is not always reachable at build time. Rather than fail the whole
+ * deployment over it, fall back to an empty list: the articles then render on
+ * first request instead of ahead of time, which is slower once and correct.
+ */
 export async function generateStaticParams() {
-  const posts = await getAllPublishedSlugs();
-  return posts.map((post) => ({ slug: post.slug }));
+  try {
+    const posts = await getAllPublishedSlugs();
+    return posts.map((post) => ({ slug: post.slug }));
+  } catch (error) {
+    console.warn("[build] could not reach the database, articles will render on demand", {
+      reason: error instanceof Error ? error.message : "unknown",
+    });
+    return [];
+  }
 }
 
 export async function generateMetadata({

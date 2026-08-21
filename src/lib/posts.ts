@@ -90,6 +90,30 @@ export type PostQuery = {
   excludeSlug?: string;
 };
 
+/**
+ * Runs a read that the build needs, and gives way if the database is not there.
+ *
+ * Pages like the home page and the Insights index are prerendered, so the build
+ * reads the database. A hosting platform often builds before the database is
+ * reachable, and without this the whole deployment fails on a connection error.
+ *
+ * This only softens the BUILD. At runtime the error is thrown as normal, because
+ * a live site quietly pretending it has no articles would hide a real outage.
+ */
+async function readForBuild<T>(read: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await read();
+  } catch (error) {
+    const building = process.env.NEXT_PHASE === "phase-production-build";
+    if (!building) throw error;
+
+    console.warn("[build] database unavailable, this page will render on demand", {
+      reason: error instanceof Error ? error.message : "unknown",
+    });
+    return fallback;
+  }
+}
+
 export async function getPublishedPosts(query: PostQuery = {}): Promise<{
   posts: PostCard[];
   total: number;
@@ -115,16 +139,20 @@ export async function getPublishedPosts(query: PostQuery = {}): Promise<{
       : {}),
   };
 
-  const [total, posts] = await Promise.all([
-    prisma.post.count({ where }),
-    prisma.post.findMany({
-      where,
-      select: postCardSelect,
-      orderBy: { publishedAt: "desc" },
-      skip: (page - 1) * POSTS_PER_PAGE,
-      take: POSTS_PER_PAGE,
-    }),
-  ]);
+  const read = () =>
+    Promise.all([
+      prisma.post.count({ where }),
+      prisma.post.findMany({
+        where,
+        select: postCardSelect,
+        orderBy: { publishedAt: "desc" },
+        skip: (page - 1) * POSTS_PER_PAGE,
+        take: POSTS_PER_PAGE,
+      }),
+    ]);
+
+  const empty: Awaited<ReturnType<typeof read>> = [0, []];
+  const [total, posts] = await readForBuild(read, empty);
 
   return {
     posts: posts.map(flattenTags),
@@ -135,11 +163,15 @@ export async function getPublishedPosts(query: PostQuery = {}): Promise<{
 }
 
 export async function getFeaturedPost(): Promise<PostCard | null> {
-  const post = await prisma.post.findFirst({
-    where: publishedWhere(),
-    select: postCardSelect,
-    orderBy: { publishedAt: "desc" },
-  });
+  const post = await readForBuild(
+    () =>
+      prisma.post.findFirst({
+        where: publishedWhere(),
+        select: postCardSelect,
+        orderBy: { publishedAt: "desc" },
+      }),
+    null,
+  );
   return post ? flattenTags(post) : null;
 }
 
@@ -190,25 +222,33 @@ export async function getRelatedPosts(
 export async function getAllPublishedSlugs(): Promise<
   { slug: string; updatedAt: Date; publishedAt: Date | null }[]
 > {
-  return prisma.post.findMany({
-    where: publishedWhere(),
-    select: { slug: true, updatedAt: true, publishedAt: true },
-    orderBy: { publishedAt: "desc" },
-  });
+  return readForBuild(
+    () =>
+      prisma.post.findMany({
+        where: publishedWhere(),
+        select: { slug: true, updatedAt: true, publishedAt: true },
+        orderBy: { publishedAt: "desc" },
+      }),
+    [],
+  );
 }
 
 /** Categories that actually have at least one published post. */
 export async function getPublicCategories(): Promise<
   { name: string; slug: string; count: number }[]
 > {
-  const categories = await prisma.category.findMany({
-    select: {
-      name: true,
-      slug: true,
-      _count: { select: { posts: { where: publishedWhere() } } },
-    },
-    orderBy: { name: "asc" },
-  });
+  const categories = await readForBuild(
+    () =>
+      prisma.category.findMany({
+        select: {
+          name: true,
+          slug: true,
+          _count: { select: { posts: { where: publishedWhere() } } },
+        },
+        orderBy: { name: "asc" },
+      }),
+    [],
+  );
 
   return categories
     .map(({ name, slug, _count }) => ({ name, slug, count: _count.posts }))
@@ -218,14 +258,18 @@ export async function getPublicCategories(): Promise<
 export async function getPublicTags(): Promise<
   { name: string; slug: string; count: number }[]
 > {
-  const tags = await prisma.tag.findMany({
-    select: {
-      name: true,
-      slug: true,
-      _count: { select: { posts: { where: { post: publishedWhere() } } } },
-    },
-    orderBy: { name: "asc" },
-  });
+  const tags = await readForBuild(
+    () =>
+      prisma.tag.findMany({
+        select: {
+          name: true,
+          slug: true,
+          _count: { select: { posts: { where: { post: publishedWhere() } } } },
+        },
+        orderBy: { name: "asc" },
+      }),
+    [],
+  );
 
   return tags
     .map(({ name, slug, _count }) => ({ name, slug, count: _count.posts }))
