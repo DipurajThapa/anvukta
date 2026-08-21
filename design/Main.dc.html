@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --paper-warm: #f5f3ef;
+      --ink: #0a1721;
+      --ink-raised: #102a3c;
+      --invert: #f7f5f1;
+      --invert-muted: #b7c4ce;
+      --line-invert: #27404f;
+      --accent: #b07a2f;
+      --accent-invert: #dfae63;
+      --sans: Inter, ui-sans-serif, system-ui, sans-serif;
+      --serif: "Source Serif 4", ui-serif, Georgia, serif;
+    }
+    body { margin: 0; font-family: var(--sans); background: var(--ink); color: var(--invert); }
+    a { color: var(--accent-invert); text-decoration: none; }
+    a:hover { color: #eec89a; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      font-weight: 500; color: var(--accent-invert);
+    }
+
+    /* Micro-animation 1 — the headline settles in, word by word. */
+    .word { display: inline-block; opacity: 0; transform: translateY(18px);
+            animation: rise 900ms cubic-bezier(.16,1,.3,1) forwards; }
+    .word:nth-of-type(1) { animation-delay: 60ms; }
+    .word:nth-of-type(2) { animation-delay: 180ms; }
+    .word:nth-of-type(3) { animation-delay: 300ms; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    .fade { opacity: 0; animation: fade 700ms ease-out 520ms forwards; }
+    @keyframes fade { to { opacity: 1; } }
+
+    /* Micro-animation 2 — the brass rule draws itself under the eyebrow. */
+    .draw { transform: scaleX(0); transform-origin: left;
+            animation: draw 800ms cubic-bezier(.16,1,.3,1) 240ms forwards; }
+    @keyframes draw { to { transform: scaleX(1); } }
+
+    /* Micro-animation 3 — arrow CTA: circle fills, arrow nudges. */
+    .cta { display: inline-flex; align-items: center; gap: 16px; cursor: pointer;
+           font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+           font-weight: 500; color: var(--invert); }
+    .cta__ring { position: relative; display: grid; place-items: center;
+                 width: 56px; height: 56px; border-radius: 999px;
+                 background: var(--accent); color: #fff; overflow: hidden; }
+    .cta__ring::after { content: ""; position: absolute; inset: 0; border-radius: 999px;
+                        background: var(--accent-invert); transform: scale(0);
+                        transition: transform 320ms cubic-bezier(.16,1,.3,1); }
+    .cta:hover .cta__ring::after { transform: scale(1); }
+    .cta__ring svg { position: relative; z-index: 1; transition: transform 220ms cubic-bezier(.2,.7,.3,1); }
+    .cta:hover .cta__ring svg { transform: translateX(4px); }
+    .cta:hover .cta__ring { color: var(--ink); }
+
+    .ghost { display: inline-flex; align-items: center; height: 48px; padding: 0 26px;
+             border: 1px solid var(--line-invert); font-size: 13px; letter-spacing: 0.1em;
+             text-transform: uppercase; font-weight: 500; cursor: pointer;
+             transition: border-color 160ms ease-out, background-color 160ms ease-out; }
+    .ghost:hover { border-color: var(--invert-muted); background: var(--ink-raised); }
+
+    /* Micro-animation 4 — the image drifts, very slowly. */
+    .plate { animation: drift 22s ease-in-out infinite alternate; }
+    @keyframes drift { from { transform: scale(1.04) translate(0,0); }
+                       to   { transform: scale(1.1) translate(-1.5%, -1%); } }
+
+    /* Micro-animation 5 — scroll cue. */
+    .cue span { display: block; width: 1px; height: 40px; background: linear-gradient(var(--accent-invert), transparent);
+                animation: cue 2.4s ease-in-out infinite; transform-origin: top; }
+    @keyframes cue { 0%,100% { transform: scaleY(.3); opacity: .4; } 50% { transform: scaleY(1); opacity: 1; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .word, .fade, .draw, .plate, .cue span { animation: none !important; opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</helmet>
+
+<div style="position: relative; width: 1240px; height: 780px; overflow: hidden; background: {{ink}}">
+
+  <!-- ================= IMAGE PLATE — this is the photo slot ================= -->
+  <div style="position: absolute; inset: 0 0 0 46%; overflow: hidden">
+    <div class="plate" style="position: absolute; inset: -6%">
+
+      <!-- Photograph, already treated: greyscale -> ink/slate/brass tritone -> grain.
+           Treated once at build time by treat.py, so the browser does no work. -->
+      <img src="hero.jpg" alt=""
+           style="width: 100%; height: 100%; object-fit: cover; display: block">
+    </div>
+
+    <!-- Left edge dissolves into the ink so the type never fights the image. -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, {{ink}} 0%, {{ink}} 12%, rgba(10,23,33,0.55) 42%, rgba(10,23,33,0.12) 100%)"></div>
+
+    <p class="fade" style="position: absolute; right: 24px; bottom: 20px; margin: 0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(247,245,241,0.42)">
+      CC0 · treated 4:5 · ink / slate / brass
+    </p>
+  </div>
+
+  <!-- ================= TYPE ================= -->
+  <div style="position: relative; padding: 88px 0 0 72px; width: 660px">
+    <p class="eyebrow" style="margin: 0">
+      <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+        <path d="M1 11V1h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+      </svg>
+      <span>Business, Technology &amp; AI</span>
+    </p>
+
+    <div class="draw" style="width: 88px; height: 2px; background: {{accent}}; margin: 22px 0 0"></div>
+
+    <h1 style="margin: 30px 0 0; font-family: var(--serif); font-size: 84px; line-height: 1.02; letter-spacing: -0.025em; font-weight: 400">
+      <span class="word">Strategy.</span><br>
+      <span class="word">Reinvention.</span><br>
+      <span class="word">Delivery.</span>
+    </h1>
+
+    <p class="fade" style="margin: 34px 0 0; max-width: 30rem; font-size: 19px; line-height: 1.62; color: {{invert}}">
+      ANVUKTA Advisory connects executive intent, technology decisions and
+      disciplined delivery — so the change you approve is the change that lands.
+    </p>
+
+    <div class="fade" style="display: flex; align-items: center; gap: 40px; margin-top: 44px">
+      <span class="cta">
+        <span>Book a Discovery Session</span>
+        <span class="cta__ring">
+          <svg viewBox="0 0 20 14" width="20" height="14" aria-hidden="true">
+            <path d="M0 7h17M11.5 1.5 17 7l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
+          </svg>
+        </span>
+      </span>
+      <span class="ghost">Our Proposition</span>
+    </div>
+  </div>
+
+  <!-- Scroll cue + section index: a small, quiet signal that there is more. -->
+  <div class="cue fade" style="position: absolute; left: 72px; bottom: 56px; display: flex; align-items: center; gap: 18px">
+    <span></span>
+    <p style="margin: 0; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(247,245,241,0.5)">
+      01 &nbsp;/&nbsp; The constraint
+    </p>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{
+  "accent": {"editor": "color", "default": "#b07a2f", "section": "Palette"},
+  "ink": {"editor": "color", "default": "#0a1721", "section": "Palette"},
+  "invert": {"editor": "color", "default": "#f7f5f1", "section": "Palette"},
+  "grainOpacity": {"editor": "range", "default": 0.16, "min": 0, "max": 0.4, "step": 0.02, "section": "Texture"},
+  "$preview": {"width": 1240, "height": 780}
+}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#b07a2f',
+      ink: this.props.ink ?? '#0a1721',
+      invert: this.props.invert ?? '#f7f5f1',
+      grainOpacity: this.props.grainOpacity ?? 0.16,
+    };
+  }
+}
+</script>
+</body>
+</html>

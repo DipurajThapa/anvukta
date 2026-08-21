@@ -1,0 +1,37 @@
+node_modules
+.next
+out
+build
+.env
+.env.local
+*.db
+*.db-journal
+prisma/*.db
+prisma/*.db-journal
+src/generated
+.DS_Store
+next-env.d.ts
+tsconfig.tsbuildinfo
+lighthouse-reports
+coverage
+
+# Generated audit output: reports, recordings and screenshots. All of it is
+# reproducible by running the scripts, and the videos alone are 26MB.
+audit/
+
+# Local editor permissions, personal to one machine.
+.claude/settings.local.json
+
+# Working files from picking and cropping the photographs. The treated results
+# live in public/media, and treat.py plus IMAGE-CREDITS.md record how and from
+# what, which is what actually needs keeping.
+design/candidates/
+design/canvas-img/
+design/commons-thumbs/
+design/large-thumbs/
+design/treated/
+design/extracted/
+design/*-sheet*.png
+design/sheet-*.png
+design/*-preview.png
+design/*.json

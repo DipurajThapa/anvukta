@@ -1,0 +1,1139 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   Anvukta Consulting Service — design tokens
+   Source of truth: DESIGN.md
+   ========================================================================= */
+
+@theme {
+  /* ---- Ground ---------------------------------------------------------- */
+  --color-paper: #ffffff;
+  --color-paper-warm: #f5f3ef;
+  --color-paper-warm-2: #edeae3;
+  --color-ink: #0a1721;
+  --color-ink-raised: #102a3c;
+
+  /* ---- Text ------------------------------------------------------------ */
+  --color-text: #0a1721;
+  --color-text-muted: #485c6b;
+  --color-text-invert: #f7f5f1;
+  --color-text-invert-muted: #b7c4ce;
+
+  /* ---- Line ------------------------------------------------------------ */
+  --color-line: #e2ded6;
+  --color-line-strong: #c8c2b6;
+  --color-line-invert: #27404f;
+
+  /* ---- Accent (brass) -------------------------------------------------- */
+  --color-accent: #b07a2f;
+  --color-accent-text: #835718;
+  --color-accent-invert: #dfae63;
+
+  /* ---- State ----------------------------------------------------------- */
+  --color-success: #1f6b4a;
+  --color-danger: #a32b22;
+  --color-warning: #8a5e1f;
+
+  /* ---- Families -------------------------------------------------------- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, "Times New Roman",
+    serif;
+
+  /* ---- Type scale ------------------------------------------------------ */
+  --text-display: clamp(2.75rem, 1.55rem + 5.3vw, 6rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.025em;
+
+  --text-h1: clamp(1.875rem, 1.15rem + 3.6vw, 4.25rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.022em;
+
+  --text-h2: clamp(1.625rem, 1.1rem + 2.4vw, 3rem);
+  --text-h2--line-height: 1.12;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.375rem, 1.15rem + 0.95vw, 1.875rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.015em;
+
+  --text-h4: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-h4--line-height: 1.35;
+  --text-h4--letter-spacing: -0.005em;
+
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  --text-body-lg--line-height: 1.65;
+
+  --text-body: clamp(0.9375rem, 0.92rem + 0.15vw, 1rem);
+  --text-body--line-height: 1.7;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.6;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.01em;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  --text-nav: 0.8125rem;
+  --text-nav--line-height: 1;
+  --text-nav--letter-spacing: 0.08em;
+
+  --text-button: 0.8125rem;
+  --text-button--line-height: 1;
+  --text-button--letter-spacing: 0.1em;
+
+  /* ---- Spacing scale ----------------------------------------------------
+     An editorial rhythm scale, not Tailwind's 4px scale. It diverges from
+     index 5 up, so --spacing-12 is 8rem rather than 3rem.
+
+     Tailwind reads these same tokens for w-*, h-*, min-w-* and min-h-*, so a
+     class like h-12 means 8rem here, not the 48px it means elsewhere. Give
+     component sizes an explicit value (h-[3rem]) and keep the numbered scale
+     for gap, padding and margin, where the rhythm is the point. Note that any
+     index this scale does not define, including half steps and 14 or 16, falls
+     back to Tailwind's 4px scale, which is how a pair like w-10 sm:w-16 ends up
+     shrinking at the larger breakpoint. */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.5rem;
+  --spacing-6: 2rem;
+  --spacing-7: 2.5rem;
+  --spacing-8: 3rem;
+  --spacing-9: 4rem;
+  --spacing-10: 5rem;
+  --spacing-11: 6.5rem;
+  --spacing-12: 8rem;
+
+  /* ---- Breakpoints ----------------------------------------------------- */
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  /* ---- Easing ---------------------------------------------------------- */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-nudge: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* Layout tokens are plain custom properties: they are used in calc()/clamp()
+   inside component CSS rather than as Tailwind utility namespaces. */
+:root {
+  --w-frame: 90rem;
+  --w-content: 78rem;
+  --w-narrow: 52rem;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-y: clamp(4rem, 8.5vw, 8.5rem);
+  --section-y-lg: clamp(5rem, 11vw, 11rem);
+  --grid-gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  --measure: min(68ch, 44rem);
+  --measure-lead: min(54ch, 38rem);
+  --measure-tight: min(42ch, 28rem);
+  --header-h: 4.5rem;
+  color-scheme: light;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-h: 5.5rem;
+  }
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-paper);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Visible focus, everywhere, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-text);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  .on-ink :focus-visible,
+  .on-ink:focus-visible {
+    outline-color: var(--color-accent-invert);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: #fff;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* =========================================================================
+   Layout primitives
+   ========================================================================= */
+
+@layer components {
+  .frame {
+    width: 100%;
+    max-width: var(--w-frame);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .content {
+    width: 100%;
+    max-width: var(--w-content);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .narrow {
+    width: 100%;
+    max-width: calc(var(--w-narrow) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .measure {
+    max-width: var(--measure);
+  }
+
+  .measure-lead {
+    max-width: var(--measure-lead);
+  }
+
+  .measure-tight {
+    max-width: var(--measure-tight);
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+
+  .section-lg {
+    padding-block: var(--section-y-lg);
+  }
+
+  .grid12 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  @media (min-width: 48rem) {
+    .grid12 {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .grid12 {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  /* ---- Surfaces -------------------------------------------------------- */
+  .surface-ink {
+    background-color: var(--color-ink);
+    color: var(--color-text-invert);
+  }
+
+  .surface-warm {
+    background-color: var(--color-paper-warm);
+  }
+
+  /* ---- Rules ----------------------------------------------------------- */
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin: 0;
+  }
+
+  .surface-ink .rule,
+  .rule-invert {
+    border-top-color: var(--color-line-invert);
+  }
+
+  /* =======================================================================
+     Typography helpers
+     ===================================================================== */
+
+  .t-display {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+  }
+
+  .t-h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    letter-spacing: var(--text-h1--letter-spacing);
+  }
+
+  .t-h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  .t-h3 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+  }
+
+  .t-h4 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    line-height: var(--text-h4--line-height);
+    letter-spacing: var(--text-h4--letter-spacing);
+  }
+
+  .t-lead {
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg--line-height);
+    color: var(--color-text-muted);
+  }
+
+  .surface-ink .t-lead {
+    color: var(--color-text-invert-muted);
+  }
+
+  .t-small {
+    font-size: var(--text-small);
+    line-height: var(--text-small--line-height);
+  }
+
+  .t-caption {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    letter-spacing: var(--text-caption--letter-spacing);
+  }
+
+  /* Three uppercase roles, and only three.
+       .t-eyebrow  section label, brass, with the bracket mark
+       .t-label    form labels, table headers, divider labels
+       .t-action   buttons, navigation, anything you click
+     Anything else uppercase is drift and should use one of these. */
+
+  .t-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    line-height: var(--text-eyebrow--line-height);
+    letter-spacing: var(--text-eyebrow--letter-spacing);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+
+  .t-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .t-action {
+    font-family: var(--font-sans);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    letter-spacing: var(--text-button--letter-spacing);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* Small tabular numerals: ring nodes, step counters. */
+  .t-micro {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .surface-ink .t-eyebrow {
+    color: var(--color-accent-invert);
+  }
+
+  .t-index {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .surface-ink .t-index {
+    color: var(--color-text-invert-muted);
+  }
+
+  .t-numeral {
+    font-family: var(--font-serif);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  /* =======================================================================
+     Controls
+     ===================================================================== */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3rem;
+    padding: 0 1.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    letter-spacing: var(--text-button--letter-spacing);
+    font-weight: 500;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color 160ms ease-out,
+      color 160ms ease-out,
+      border-color 160ms ease-out;
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-ink);
+    color: var(--color-text-invert);
+    border-color: var(--color-ink);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-text);
+    border-color: var(--color-accent-text);
+  }
+
+  .surface-ink .btn-primary {
+    background-color: var(--color-text-invert);
+    color: var(--color-ink);
+    border-color: var(--color-text-invert);
+  }
+
+  .surface-ink .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-invert);
+    border-color: var(--color-accent-invert);
+    color: var(--color-ink);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-text);
+    border-color: var(--color-line-strong);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-paper-warm);
+    border-color: var(--color-text);
+  }
+
+  .surface-ink .btn-secondary {
+    color: var(--color-text-invert);
+    border-color: var(--color-line-invert);
+  }
+
+  .surface-ink .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-ink-raised);
+    border-color: var(--color-text-invert-muted);
+  }
+
+  .btn-danger {
+    background-color: var(--color-danger);
+    color: #fff;
+    border-color: var(--color-danger);
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    background-color: #86201a;
+    border-color: #86201a;
+  }
+
+  /* Arrow CTA — label + filled circle (motif 2) */
+  .btn-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: none;
+    border: 0;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--text-button);
+    letter-spacing: var(--text-button--letter-spacing);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .btn-arrow__circle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: calc(infinity * 1px);
+    background-color: var(--color-accent);
+    color: #fff;
+    transition: background-color 160ms ease-out;
+  }
+
+  .btn-arrow__circle svg {
+    transition: transform 220ms var(--ease-nudge);
+  }
+
+  .btn-arrow:hover .btn-arrow__circle,
+  .btn-arrow:focus-visible .btn-arrow__circle {
+    background-color: var(--color-accent-text);
+  }
+
+  .btn-arrow:hover .btn-arrow__circle svg,
+  .btn-arrow:focus-visible .btn-arrow__circle svg {
+    transform: translateX(4px);
+  }
+
+  .surface-ink .btn-arrow:hover .btn-arrow__circle,
+  .surface-ink .btn-arrow:focus-visible .btn-arrow__circle {
+    background-color: var(--color-accent-invert);
+    color: var(--color-ink);
+  }
+
+  /* Text link */
+  .link {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--color-accent-text) 40%,
+      transparent
+    );
+    transition: text-decoration-color 160ms ease-out;
+  }
+
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .surface-ink .link {
+    color: var(--color-accent-invert);
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--color-accent-invert) 40%,
+      transparent
+    );
+  }
+
+  /* Underline-grow nav link */
+  /* Navigation uses the same metrics as a button, so a nav item and a CTA
+     never look like two different type systems sitting next to each other. */
+  .navlink {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    letter-spacing: var(--text-button--letter-spacing);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .navlink::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms var(--ease-editorial);
+  }
+
+  .navlink:hover::after,
+  .navlink:focus-visible::after,
+  .navlink[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  /* Pill / tag */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: calc(infinity * 1px);
+    font-size: var(--text-caption);
+    letter-spacing: var(--text-caption--letter-spacing);
+    color: var(--color-text-muted);
+    transition:
+      border-color 160ms ease-out,
+      color 160ms ease-out;
+  }
+
+  a.pill:hover {
+    border-color: var(--color-text);
+    color: var(--color-text);
+  }
+
+  .pill[aria-current="true"],
+  .pill--active {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-text-invert);
+  }
+
+  /* =======================================================================
+     Forms
+     ===================================================================== */
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .field__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .field__hint {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    letter-spacing: var(--text-caption--letter-spacing);
+    color: var(--color-text-muted);
+  }
+
+  .field__control {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line-strong);
+    border-radius: 0;
+    font-size: var(--text-body);
+    transition:
+      border-color 160ms ease-out,
+      background-color 160ms ease-out;
+    appearance: none;
+  }
+
+  textarea.field__control {
+    min-height: 9rem;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  select.field__control {
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.25rem) 55%,
+      calc(100% - 0.9rem) 55%;
+    background-size:
+      0.375rem 0.375rem,
+      0.375rem 0.375rem;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+
+  .field__control:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  .field__control[aria-invalid="true"] {
+    border-color: var(--color-danger);
+    border-width: 2px;
+  }
+
+  .field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.375rem;
+    font-size: var(--text-caption);
+    color: var(--color-danger);
+    font-weight: 500;
+  }
+
+  .field--check {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  /* 24px is the WCAG 2.2 AA (2.5.8) minimum target size. */
+  .field--check input[type="checkbox"] {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0;
+    accent-color: var(--color-accent-text);
+  }
+
+  /* Honeypot — visually and programmatically out of the way for humans,
+     still present in the DOM for naive bots. */
+  .honeypot {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sr-only {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /**
+   * A three-column table cannot fit a phone. Rather than let it scroll sideways
+   * with no hint and the useful column cut off mid-word, each row becomes a
+   * small block with its column heading above each value. The markup stays a
+   * real table, so it still reads correctly to a screen reader.
+   */
+  @media (max-width: 39.99rem) {
+    .data-table table {
+      display: block;
+    }
+
+    .data-table caption {
+      display: block;
+      text-align: left;
+    }
+
+    .data-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .data-table tbody,
+    .data-table tr {
+      display: block;
+    }
+
+    .data-table tr {
+      padding-block: 0.75rem;
+    }
+
+    .data-table th,
+    .data-table td {
+      display: block;
+      padding: 0.25rem 0 0;
+      max-width: none;
+    }
+
+    .data-table th[data-label]::before,
+    .data-table td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 0.125rem;
+      font-family: var(--font-sans);
+      font-size: var(--text-eyebrow);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* The row label leads the block, so it does not need its own heading. */
+    .data-table th[scope="row"]::before {
+      content: none;
+    }
+
+    .data-table th[scope="row"] {
+      font-size: var(--text-body);
+      font-weight: 600;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 200;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-ink);
+    color: var(--color-text-invert);
+    font-family: var(--font-sans);
+    font-size: var(--text-button);
+    letter-spacing: var(--text-button--letter-spacing);
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: top 160ms ease-out;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* =======================================================================
+     Motion
+
+     There is no entrance animation on this site. Content is painted and
+     readable straight away; anything that moves does so because the reader
+     hovered it, focused it, or scrolled past the engagement diagram.
+     ===================================================================== */
+
+  /* Engagement ring. Every transition lives here so the reduced-motion rule
+     below switches them all off without the component having to check. */
+  .ring-fill {
+    transition: stroke-dashoffset 700ms var(--ease-editorial);
+  }
+
+  .ring-node {
+    transition:
+      fill 400ms ease-out,
+      stroke 400ms ease-out,
+      stroke-opacity 400ms ease-out,
+      stroke-width 400ms ease-out;
+  }
+
+  .ring-numeral {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    transition:
+      fill 400ms ease-out,
+      fill-opacity 400ms ease-out;
+  }
+
+  .ring-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+  }
+
+  .ring-stage {
+    font-family: var(--font-serif);
+    /* Drawing units, not screen pixels: the SVG scales this with the ring. */
+    font-size: 26px;
+    letter-spacing: -0.015em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+}
+
+/* =========================================================================
+   Article body — server-rendered, sanitised Markdown
+   ========================================================================= */
+
+@layer components {
+  .prose {
+    font-size: var(--text-body-lg);
+    line-height: 1.75;
+    color: var(--color-text);
+  }
+
+  .prose > * + * {
+    margin-top: 1.5em;
+  }
+
+  .prose h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    margin-top: 2.25em;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .prose h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+    margin-top: 1.9em;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .prose h4 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--text-h4--line-height);
+    letter-spacing: var(--text-h4--letter-spacing);
+    font-weight: 600;
+    margin-top: 1.7em;
+  }
+
+  .prose h2 + *,
+  .prose h3 + *,
+  .prose h4 + * {
+    margin-top: 0.8em;
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.35em;
+  }
+
+  .prose ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .prose ul > li {
+    position: relative;
+    padding-left: 1.6em;
+  }
+
+  .prose ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0.25em;
+    top: 0.72em;
+    width: 0.5em;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose ol > li::marker {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose li + li {
+    margin-top: 0.6em;
+  }
+
+  .prose a {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .prose strong {
+    font-weight: 600;
+  }
+
+  .prose blockquote {
+    margin-inline: 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--color-accent);
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+  }
+
+  .prose blockquote p + p {
+    margin-top: 0.6em;
+  }
+
+  .prose code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.875em;
+    background-color: var(--color-paper-warm-2);
+    padding: 0.15em 0.4em;
+  }
+
+  .prose pre {
+    background-color: var(--color-ink);
+    color: var(--color-text-invert);
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .prose pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .prose hr {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin-block: 2.5em;
+  }
+
+  .prose img {
+    width: 100%;
+    height: auto;
+  }
+
+  .prose figure figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  /* Tables scroll inside their own container — the page never scrolls sideways. */
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+    display: block;
+    overflow-x: auto;
+  }
+
+  .prose th,
+  .prose td {
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.75rem 1rem 0.75rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose th {
+    font-size: var(--text-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .prose .callout {
+    border-left: 2px solid var(--color-accent);
+    background-color: var(--color-paper-warm);
+    padding: 1.25rem 1.5rem;
+    font-size: var(--text-body);
+  }
+
+  .prose .callout__label {
+    display: block;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--text-eyebrow--letter-spacing);
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-accent-text);
+    margin-bottom: 0.5rem;
+  }
+}

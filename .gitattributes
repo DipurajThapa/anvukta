@@ -1,0 +1,15 @@
+# Normalise line endings so a Windows checkout does not show every file as
+# changed the moment someone on another machine touches it.
+* text=auto eol=lf
+
+# Binary, never to be converted.
+*.jpg binary
+*.png binary
+*.webp binary
+*.avif binary
+*.webm binary
+*.mp4 binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.db binary

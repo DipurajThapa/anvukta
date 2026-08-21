@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+  <style>
+    :root {
+      --paper: #ffffff; --paper-warm: #f5f3ef; --paper-warm-2: #edeae3;
+      --ink: #0a1721; --text: #0a1721; --muted: #485c6b;
+      --invert: #f7f5f1; --line: #e2ded6; --line-strong: #c8c2b6;
+      --accent: #b07a2f; --accent-text: #835718; --accent-invert: #dfae63;
+      --sans: Inter, ui-sans-serif, system-ui, sans-serif;
+      --serif: "Source Serif 4", ui-serif, Georgia, serif;
+    }
+    body { margin: 0; font-family: var(--sans); background: var(--paper); color: var(--text); }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: #6d4713; }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px;
+               letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; color: var(--accent-text); }
+    .label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+             color: var(--muted); font-weight: 500; margin: 0; }
+    .note { font-size: 13px; line-height: 1.6; color: var(--muted); }
+
+    .band { position: relative; display: flex; align-items: center; padding: 0 16px;
+            font-size: 12px; letter-spacing: 0.04em; }
+    .band__tag { position: absolute; right: 14px; font-size: 10px; letter-spacing: 0.14em;
+                 text-transform: uppercase; opacity: 0.62; }
+
+    /* The "after" column breathes, so the difference is legible at a glance. */
+    .pulse { animation: pulse 6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.86; } }
+
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none !important; } }
+  </style>
+</helmet>
+
+<div style="width: 1240px; background: {{paper}}; padding: 48px 56px 56px">
+
+  <p class="eyebrow" style="margin: 0">
+    <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M1 11V1h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    <span>Page rhythm</span>
+  </p>
+
+  <h2 style="margin: 16px 0 0; font-family: var(--serif); font-size: 38px; line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; max-width: 26ch">
+    The page is monotonous because every section is the same shape.
+  </h2>
+
+  <p class="note" style="margin: 14px 0 0; max-width: 44rem">
+    Same width, same heading size, same left-aligned text block, same amount of air.
+    The fix is not more decoration — it is varying the <em>shape</em> of each section
+    so the eye has something to measure against.
+  </p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px">
+
+    <!-- ============================= NOW ============================= -->
+    <div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid {{lineStrong}}; padding-bottom: 10px">
+        <p class="label">Now</p>
+        <p class="label" style="color: {{accentText}}">9 sections, 1 shape</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 16px">
+        <div class="band" style="height: 62px; background: {{paperWarm}}; color: {{muted}}">Hero<span class="band__tag">Ink</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">The constraint<span class="band__tag">Paper</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">What we hear<span class="band__tag">Warm</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Proposition<span class="band__tag">Ink</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Outcomes<span class="band__tag">Paper</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Capabilities<span class="band__tag">Warm</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Sectors<span class="band__tag">Warm</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Leadership<span class="band__tag">Ink</span></div>
+        <div class="band" style="height: 56px; background: {{paperWarm}}; color: {{muted}}">Experience<span class="band__tag">Paper</span></div>
+      </div>
+
+      <p class="note" style="margin-top: 18px">
+        Only the ground colour changes. Every band is the same height, the same
+        density, and starts with the same heading at the same size on the same
+        left edge. Nine of those in a row and the reader stops seeing sections.
+      </p>
+    </div>
+
+    <!-- ============================= PROPOSED ============================= -->
+    <div class="pulse">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; border-bottom: 2px solid {{accent}}; padding-bottom: 10px">
+        <p class="label" style="color: {{accentText}}">Proposed</p>
+        <p class="label" style="color: {{accentText}}">5 shapes, in rotation</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 16px">
+
+        <div class="band" style="height: 104px; background: {{ink}}; color: {{invert}}">
+          <span style="font-family: var(--serif); font-size: 20px">Hero — image right, type left</span>
+          <span class="band__tag">Full bleed · photo</span>
+        </div>
+
+        <div class="band" style="height: 30px; background: {{paperWarm2}}; color: {{muted}}">
+          <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase">01 — Chapter rule</span>
+          <span class="band__tag">Breaker B</span>
+        </div>
+
+        <div class="band" style="height: 78px; background: {{paper}}; color: {{text}}; border: 1px solid {{line}}">
+          <span>The constraint — <strong>five boxes</strong>, grid</span>
+          <span class="band__tag" style="color: {{muted}}">Cards</span>
+        </div>
+
+        <div class="band" style="height: 68px; background: {{paperWarm}}; color: {{text}}">
+          <span style="font-family: var(--serif); font-size: 19px">“We do not price before we understand the problem.”</span>
+          <span class="band__tag" style="color: {{muted}}">Breaker C · statement</span>
+        </div>
+
+        <div class="band" style="height: 52px; background: {{paper}}; color: {{text}}; border: 1px solid {{line}}">
+          <span>What we hear — narrow list, wide margin</span>
+          <span class="band__tag" style="color: {{muted}}">Asymmetric</span>
+        </div>
+
+        <div class="band" style="height: 86px; background: {{ink}}; color: {{invert}}">
+          <span style="font-family: var(--serif); font-size: 20px">Outcomes — oversized numerals</span>
+          <span class="band__tag">Dark · proof</span>
+        </div>
+
+        <div class="band" style="height: 74px; background: linear-gradient(100deg, {{ink}} 0%, #2d2a22 55%, {{accent}} 140%); color: {{invert}}">
+          <span style="font-family: var(--serif); font-size: 19px">A break at any single link stalls the programme.</span>
+          <span class="band__tag">Breaker A · image band</span>
+        </div>
+
+        <div class="band" style="height: 60px; background: {{paper}}; color: {{text}}; border: 1px solid {{line}}">
+          <span>Capabilities — accordion, hairline stack</span>
+          <span class="band__tag" style="color: {{muted}}">Interactive</span>
+        </div>
+
+        <div class="band" style="height: 96px; background: {{paperWarm}}; color: {{text}}">
+          <span>Experience — photo left, case story right</span>
+          <span class="band__tag" style="color: {{muted}}">Split · photo</span>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top: 18px">
+        Heights change. Two sections carry photographs. Two are broken by a
+        one-sentence band. One is a grid of boxes, one an accordion, one a
+        left-heavy list with a wide empty margin. The reader now has landmarks.
+      </p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 40px; padding-top: 24px; border-top: 1px solid {{line}}">
+    <div>
+      <p class="label" style="margin-bottom: 8px">Rule 1</p>
+      <p class="note">Never two sections of the same height and density in a row.</p>
+    </div>
+    <div>
+      <p class="label" style="margin-bottom: 8px">Rule 2</p>
+      <p class="note">A photograph every third or fourth section — no more.</p>
+    </div>
+    <div>
+      <p class="label" style="margin-bottom: 8px">Rule 3</p>
+      <p class="note">Every dark section is followed by a breaker, never by another dark one.</p>
+    </div>
+    <div>
+      <p class="label" style="margin-bottom: 8px">Rule 4</p>
+      <p class="note">One section per page may break the grid. Exactly one.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{
+  "accent": {"editor": "color", "default": "#b07a2f", "section": "Palette"},
+  "ink": {"editor": "color", "default": "#0a1721", "section": "Palette"},
+  "paperWarm": {"editor": "color", "default": "#f5f3ef", "section": "Palette"},
+  "$preview": {"width": 1240, "height": 1080}
+}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#b07a2f',
+      ink: this.props.ink ?? '#0a1721',
+      paperWarm: this.props.paperWarm ?? '#f5f3ef',
+      paper: '#ffffff',
+      paperWarm2: '#edeae3',
+      text: '#0a1721',
+      muted: '#485c6b',
+      invert: '#f7f5f1',
+      line: '#e2ded6',
+      lineStrong: '#c8c2b6',
+      accentText: '#835718',
+    };
+  }
+}
+</script>
+</body>
+</html>

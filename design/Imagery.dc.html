@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+  <style>
+    :root {
+      --paper: #ffffff; --paper-warm: #f5f3ef; --paper-warm-2: #edeae3;
+      --ink: #0a1721; --text: #0a1721; --muted: #485c6b;
+      --invert: #f7f5f1; --line: #e2ded6; --line-strong: #c8c2b6;
+      --accent: #b07a2f; --accent-text: #835718; --accent-invert: #dfae63;
+      --sans: Inter, ui-sans-serif, system-ui, sans-serif;
+      --serif: "Source Serif 4", ui-serif, Georgia, serif;
+    }
+    body { margin: 0; font-family: var(--sans); background: var(--paper); color: var(--text); }
+    a { color: var(--accent-text); text-decoration: none; }
+    a:hover { color: #6d4713; }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px;
+               letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;
+               color: var(--accent-text); }
+    .label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+             color: var(--muted); font-weight: 500; }
+    .note { font-size: 13px; line-height: 1.6; color: var(--muted); }
+    .h3 { font-family: var(--serif); font-size: 22px; line-height: 1.24;
+          letter-spacing: -0.015em; font-weight: 400; margin: 0; }
+
+    /* Hovering a slot lifts the crop and reveals the caption rule. */
+    .slot { position: relative; overflow: hidden; background: var(--ink); cursor: pointer; }
+    .slot__img { position: absolute; inset: 0; transition: transform 700ms cubic-bezier(.16,1,.3,1); }
+    .slot:hover .slot__img { transform: scale(1.05); }
+    .slot__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+                 background: var(--accent); transform: scaleX(0); transform-origin: left;
+                 transition: transform 420ms cubic-bezier(.16,1,.3,1); }
+    .slot:hover .slot__bar { transform: scaleX(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slot__img, .slot__bar { transition: none !important; }
+    }
+  </style>
+</helmet>
+
+<div style="width: 1240px; background: {{paper}}; padding: 48px 56px 56px">
+
+  <p class="eyebrow" style="margin: 0">
+    <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M1 11V1h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    <span>Imagery</span>
+  </p>
+
+  <h2 style="margin: 16px 0 0; font-family: var(--serif); font-size: 38px; line-height: 1.12; letter-spacing: -0.02em; font-weight: 400; max-width: 22ch">
+    Photographs, treated so they belong to the brand.
+  </h2>
+
+  <p class="note" style="margin: 14px 0 0; max-width: 40rem">
+    These are real photographs, already treated. One recipe runs over every image:
+    desaturate, then map shadows to ink, mid-tones to a cool slate and highlights to
+    brass, then a light grain. Four photographs from four different photographers now
+    read as one set. All four are CC0 or public domain — free for commercial use with
+    no attribution required.
+  </p>
+
+  <hr style="border: 0; border-top: 1px solid {{line}}; margin: 32px 0 28px">
+
+  <!-- ============================ SUBJECT SLOTS ============================ -->
+  <p class="label" style="margin: 0 0 16px">Four subjects, four ratios</p>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+    <div>
+      <div class="slot" style="aspect-ratio: 4 / 5">
+        <img class="slot__img" src="hero.jpg" alt=""
+             style="width: 100%; height: 100%; object-fit: cover">
+        <span class="slot__bar"></span>
+      </div>
+      <p class="h3" style="margin-top: 14px">Architecture</p>
+      <p class="note" style="margin-top: 6px">4:5 · hero, leadership</p>
+    </div>
+
+    <div>
+      <div class="slot" style="aspect-ratio: 4 / 5">
+        <img class="slot__img" src="infrastructure.jpg" alt=""
+             style="width: 100%; height: 100%; object-fit: cover">
+        <span class="slot__bar"></span>
+      </div>
+      <p class="h3" style="margin-top: 14px">Infrastructure</p>
+      <p class="note" style="margin-top: 6px">4:5 · capabilities</p>
+    </div>
+
+    <div>
+      <div class="slot" style="aspect-ratio: 4 / 5">
+        <img class="slot__img" src="operations.jpg" alt=""
+             style="width: 100%; height: 100%; object-fit: cover">
+        <span class="slot__bar"></span>
+      </div>
+      <p class="h3" style="margin-top: 14px">Complex operations</p>
+      <p class="note" style="margin-top: 6px">4:5 · experience</p>
+    </div>
+
+    <div>
+      <div class="slot" style="aspect-ratio: 4 / 5">
+        <img class="slot__img" src="systems.jpg" alt=""
+             style="width: 100%; height: 100%; object-fit: cover">
+        <span class="slot__bar"></span>
+      </div>
+      <p class="h3" style="margin-top: 14px">Systems</p>
+      <p class="note" style="margin-top: 6px">4:5 · how we work</p>
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid {{line}}; margin: 36px 0 28px">
+
+  <!-- ============================ RULES ============================ -->
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px">
+    <div style="border-top: 2px solid {{ink}}; padding-top: 16px">
+      <p class="label" style="margin: 0">Do</p>
+      <ul style="margin: 12px 0 0; padding-left: 18px" class="note">
+        <li style="margin-bottom: 6px">Crop hard. One subject, one idea.</li>
+        <li style="margin-bottom: 6px">Leave a quiet corner for type.</li>
+        <li style="margin-bottom: 6px">Real places, real work, real light.</li>
+        <li style="margin-bottom: 6px">Two to four photographs per page, no more.</li>
+        <li>Source CC0 / public domain only.</li>
+      </ul>
+    </div>
+    <div style="border-top: 2px solid {{ink}}; padding-top: 16px">
+      <p class="label" style="margin: 0">Don't</p>
+      <ul style="margin: 12px 0 0; padding-left: 18px" class="note">
+        <li style="margin-bottom: 6px">Staged boardrooms or handshakes.</li>
+        <li style="margin-bottom: 6px">Glowing brains, circuits, robots.</li>
+        <li style="margin-bottom: 6px">Anything with a screen full of charts.</li>
+        <li>Photos behind body copy.</li>
+      </ul>
+    </div>
+    <div style="border-top: 2px solid {{accent}}; padding-top: 16px">
+      <p class="label" style="margin: 0; color: {{accentText}}">The treatment</p>
+      <ul style="margin: 12px 0 0; padding-left: 18px" class="note">
+        <li style="margin-bottom: 6px">Greyscale, then a <strong>tritone</strong>: <strong>#0A1721</strong> shadows, <strong>#4A545E</strong> mids, <strong>#DFAE63</strong> highlights.</li>
+        <li style="margin-bottom: 6px">The cool mid-tone is the whole trick — a straight ink-to-brass ramp turns every photo sepia.</li>
+        <li style="margin-bottom: 6px">Luminance-only grain, strength 7.</li>
+        <li>Square corners. Never a rounded photo.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{
+  "accent": {"editor": "color", "default": "#b07a2f", "section": "Palette"},
+  "ink": {"editor": "color", "default": "#0a1721", "section": "Palette"},
+  "paper": {"editor": "color", "default": "#ffffff", "section": "Palette"},
+  "$preview": {"width": 1240, "height": 900}
+}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#b07a2f',
+      ink: this.props.ink ?? '#0a1721',
+      paper: this.props.paper ?? '#ffffff',
+      accentText: '#835718',
+      line: '#e2ded6',
+    };
+  }
+}
+</script>
+</body>
+</html>
