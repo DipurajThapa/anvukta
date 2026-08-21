@@ -69,6 +69,20 @@ const nextConfig: NextConfig = {
 
   serverExternalPackages: ["@prisma/client", "better-sqlite3", "nodemailer"],
 
+  /**
+   * Webpack keeps a cache on disk to make the next build faster. That cache is
+   * about 250MB here, dwarfing the 6MB the site itself compiles to, and a host
+   * that ships the build folder is then uploading a quarter of a gigabyte of
+   * something it will never read.
+   *
+   * A deployment builds once from a clean checkout, so there is no next build to
+   * speed up. Local development is unaffected: `next dev` still caches.
+   */
+  webpack: (config, { dev }) => {
+    if (!dev) config.cache = false;
+    return config;
+  },
+
   async headers() {
     return [
       {
