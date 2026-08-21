@@ -198,6 +198,57 @@ npm start
 6. Terminate TLS in front of the app. `Strict-Transport-Security` is sent in
    production; the rest of the security headers are set in `next.config.ts`.
 
+### GoDaddy Node.js Hosting
+
+Their requirements, and how this repository already meets them:
+
+| Requirement | Where it is met |
+| --- | --- |
+| `package.json` with non-empty `name`, `version`, `main` | `main` is `server.mjs` |
+| A `build` script | `prisma generate && next build` |
+| A `start` script, and the file it runs must exist | `node server.mjs` |
+| Listen on `process.env.PORT` | `server.mjs` binds it, verified on a non-default port |
+| Anything used during build or start in `dependencies` | tailwind, prisma and typescript were moved out of `devDependencies` |
+| Do not upload `node_modules` | already in `.gitignore` |
+| Zip under 100 MB | the repository is about 13 MB |
+
+The build was checked the way the host runs it: a clean export, `npm install
+--omit=dev`, and no database present. It succeeds.
+
+**Confirm before deploying.** These are not in GoDaddy's documentation, and two of
+them decide whether the site keeps its data:
+
+1. Which database the Database tab provides, and its connection details.
+2. Whether that database survives a redeploy. Until this is answered in writing,
+   treat it as temporary.
+3. That Node 20.11 or later is available and selectable. The app requires it.
+4. Whether outbound connections can reach a database elsewhere. If only ports 80
+   and 443 are open, an external database on 3306 or 5432 is unreachable.
+
+Do not put the SQLite file in `/public/assets/`, which is the folder their docs
+suggest for files that must survive a deployment. That folder is served to the
+public, so the database of enquiries, email addresses and password hashes would be
+downloadable by anyone.
+
+### Switching to MySQL or MariaDB
+
+Prisma fixes the provider in the schema, so this is an edit rather than a setting.
+
+1. `prisma/schema.prisma` — change `provider` to `"mysql"`.
+2. `src/lib/db.ts` — swap `PrismaBetterSqlite3` for the MySQL driver adapter.
+3. Give every string longer than 191 characters an explicit `@db.Text`, because
+   MySQL maps `String` to `VARCHAR(191)` by default and would otherwise refuse the
+   value. In this schema that is `Post.content` (up to 120,000 characters),
+   `ContactSubmission.message` (4,000), `ChatMessage.body` (500),
+   `Post.excerpt` (320), and both `userAgent` columns (300).
+4. Give each unique string column an index length. There are nine: `User.email`,
+   `Session.tokenHash`, `Category.name`, `Category.slug`, `Tag.name`, `Tag.slug`,
+   `Post.slug`, `RateLimit.key` and `ChatConversation.token`.
+5. Delete `prisma/migrations/` and run `npx prisma migrate dev --name init`.
+6. Re-run `npm test` and `node scripts/security-check.mjs`. The rate limiter
+   depends on a conditional `UPDATE` behaving atomically, which is worth proving
+   again on a different engine.
+
 ### Switching to PostgreSQL
 
 1. `prisma/schema.prisma` — change `provider` to `"postgresql"`.
