@@ -28,9 +28,32 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-/** Single shared client — avoids exhausting handles during dev hot-reload. */
-export const prisma: PrismaClient = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+function client(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient();
+  }
+  return globalForPrisma.prisma;
 }
+
+/**
+ * The shared client, built on first use rather than on import.
+ *
+ * Importing this file used to construct the client immediately, which meant a
+ * missing DATABASE_URL crashed at import. During a build that is fatal: Next
+ * loads every route to work out what it can prerender, and a host that supplies
+ * its secrets at run time rather than build time has no URL yet.
+ *
+ * Waiting until a query is actually made moves that error to the moment it
+ * means something. Nothing is hidden: the same message is still thrown, and a
+ * page that genuinely needs the database still fails loudly.
+ *
+ * One instance either way, which also stops dev hot-reload exhausting handles.
+ */
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, property, receiver) {
+    return Reflect.get(client(), property, receiver);
+  },
+  has(_target, property) {
+    return Reflect.has(client(), property);
+  },
+});
